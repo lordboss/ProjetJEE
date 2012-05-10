@@ -20,7 +20,7 @@ git init
 git remote add origin git@github.com:tfonllad/ProjetJEE.git   
 (ne pas remplacer mon login par le votre dans la commande ci-dessus).
 
-######Pour récupérer la dernière version sur le site      
+######Pour récupérer la dernière version depuis le site      
 git fetch origin   
 git merge origin/master   
 
