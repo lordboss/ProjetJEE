@@ -17,7 +17,7 @@ cd ../LeDossierduProjetJEE
 
 ######La première fois :    
 git init   
-git remote add origin git@github.com:tfonllad/ProjetJEE.git 
+git remote add origin git@github.com:tfonllad/ProjetJEE.git   
 (ne pas remplacer mon login par le votre dans la commande ci-dessus).
 
 ######Pour récupérer la dernière version sur le site      
