@@ -26,9 +26,3 @@ git commit -am 'commentaire'
 git push origin
 
 
-
-
-
-
-
-
