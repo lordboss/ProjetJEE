@@ -3,104 +3,51 @@ package site;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
 public class JDBCconnection {
 
 	public static void main(String[] args) {
-		sauverEnBase("Jean DUPONT");
-		lireEnBase();
-	}
-
-	public static void sauverEnBase(String personne) {
-
-		// Information d'accès à la base de données
-		String url = "jdbc:mysql://localhost/formation";
-		String login = "root";
-		String passwd = "";
-		Connection cn =null;
-		Statement st =null;
-
-		try {
-
-			// Etape 1 : Chargement du driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Etape 2 : récupération de la connexion
-			cn = DriverManager.getConnection(url, login, passwd);
-
-			// Etape 3 : Création d'un statement
-			st = cn.createStatement();
-
-			String sql = "INSERT INTO `javadb` (`personne`) VALUES ('"
-					+ personne + "')";
-
-			// Etape 4 : exécution requête
-			st.executeUpdate(sql);
-
-			// Si récup données alors étapes 5 (parcours Resultset)
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		} finally {
-			try {
-			// Etape 6 : libérer ressources de la mémoire.
-				cn.close();
-				st.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void lireEnBase() {
-
-		// Information d'accès à la base de données
-		String url = "jdbc:mysql://localhost/formation";
-		String login = "root";
-		String passwd = "";
-		Connection cn =null;
-		Statement st =null;
-		ResultSet rs =null;
 		
 		try {
-
-			// Etape 1 : Chargement du driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Etape 2 : récupération de la connexion
-			cn = DriverManager.getConnection(url, login, passwd);
-
-			// Etape 3 : Création d'un statement
-			st = cn.createStatement();
-
-			String sql = "SELECT * FROM javadb";
-
-			// Etape 4 : exécution requête
-			rs = st.executeQuery(sql);
-
-			// Si récup données alors étapes 5 (parcours Resultset)
-
-			while (rs.next()) {
-				System.out.println(rs.getString("personne"));
+			Class.forName("org.postgresql.Driver");
+			
+			String url = "jdbc:postgresql://localhost:5432/jdbc";
+			String user = "postgres";
+			String passwd = "hamtaro";
+			
+			Connection conn = DriverManager.getConnection(url, user, passwd);
+			
+			//Création d'un objet Statement
+			Statement state = conn.createStatement();
+			//L'objet ResultSet contient le résultat de la requête SQL
+			ResultSet result = state.executeQuery("SELECT * FROM classe");
+			//On récupère les MetaData
+			ResultSetMetaData resultMeta = result.getMetaData();
+			
+			System.out.println("\n**********************************");
+			//On affiche le nom des colonnes
+			for(int i = 1; i <=  resultMeta.getColumnCount(); i++)
+				System.out.print("\t" + resultMeta.getColumnName(i).toUpperCase() + "\t *");
+			
+			System.out.println("\n**********************************");
+			
+			while(result.next()){			
+				for(int i = 1; i <=  resultMeta.getColumnCount(); i++)
+					System.out.print("\t" + result.getObject(i).toString() + "\t |");
 				
+				System.out.println("\n---------------------------------");
+
 			}
-		} catch (SQLException e) {
+
+
+                        result.close();
+                        state.close();
+
+			
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-			// Etape 6 : libérer ressources de la mémoire.
-				cn.close();
-				st.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		}		
 	}
-	}
+}
